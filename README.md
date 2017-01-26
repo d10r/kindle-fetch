@@ -1,4 +1,4 @@
-# About
+## About
 
 This is a node script extracting E-Books from Amazon Kindle Cloud Reader.
 Useful e.g. for being able to read on devices where the Clour Reader doesn't work and for having a copy in an open format.
