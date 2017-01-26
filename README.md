@@ -11,7 +11,19 @@ Code is from this gists:
 
 I have just added minor usability improvements (e.g. cmdline switch for input file selection) and a package.json file.
 
-**TODO**
+## Usage
+
+<pre>
+npm install
+./main.js --help
+</pre>
+
+You just need to figure out the file to which the ebook was stored. As an example, in my case that was `~/.config/chromium/Default/databases/https_lesen.amazon.de_0/2`
+
+Of course the ebook needs to first be downloaded for offline use:
+Go to the `library` view in the cloud reader App, right click the cover, click `Download`.
+
+## TODO
 
 This is much better then nothing, but far from perfect.
 
