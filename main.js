@@ -1,10 +1,4 @@
-/*
- * source:
- * 1: https://gist.github.com/yangchenyun/a1c123935d82f5e25d57
- * 2: https://gist.github.com/EelMood/84140e557065ac3d73f669f120429ae1
-*/
-
-
+#!/usr/bin/env node
 
 /* 
  * @fileoverview Program to free the content in kindle books as plain HTML.
@@ -212,19 +206,59 @@ function s(metadata) { // a is bookinfo.metadata
     }
 }
 
+function usageExit(errCode = 0) {
+    console.log('usage: ' + process.argv[1] + ' -f <file> [--only-title]');
+    console.log('Converts kindle books in a given Chrome/Chromium WebSQL file to HTML file(s).');
+    console.log(' -f: Name of an sqlite file created by kindle cloud reader.');
+    console.log('     Example for a typical path: ~/.config/google-chrome/Default/databases/https_read.amazon.com_0/2');
+    console.log('     If you are using Chromium, look at ~/.config/chromium/Default/databases/ instead');
+    console.log('     You may also have a different profile name then "Default"');
+    console.log('\nThis program will not work with other browsers (e.g. Firefox) because of different WebSQL file formats.');
+    
+    process.exit(errCode);
+}
+
+// improve readability
+const css = `
+<style>
+body {
+    margin: 0 auto;
+    max-width: 50em;
+    background: #FFFAFD;
+    font-size:100%;
+    line-height:1.5;
+}
+
+img {
+    max-width: 100%;
+}
+</style>
+`
+
 var os = require('osenv');
 var fs = require('fs');
 var path = require('path');
 var sqlite3 = require('sqlite3').verbose();
+
+var process = require('process');
 // 
 
 // http://read.amazon.com stores the ebook with webSQL, which is a sqlite accessible in Chrome
 // in this case, kindle cloud reader :
 //  => was opened with google-chrome
 //  => the os is linux
-//  => and i used the french app : hence the "lire.amazon.fr"
-// the english version is alon "read.amazon.com"
-var KINDLE_DB = os.home() + '/.config/google-chrome/Default/databases/https_lire.amazon.fr_0/2';
+//var KINDLE_DB = os.home() + '/.config/google-chrome/Default/databases/https_read.amazon.com_0/2';
+
+if(process.argv.indexOf('--help') != -1) {
+    usageExit(0)
+}
+
+if(process.argv.indexOf('-f') != -1) {
+    KINDLE_DB = process.argv[process.argv.indexOf('-f') + 1];
+} else {
+    usageExit(1);
+}
+
 var db = new sqlite3.Database(KINDLE_DB);
 
 // regex to locate and replace javascript fragments in the generated html
@@ -235,6 +269,9 @@ var modifiedDest = '<a id="$1" class="filepos_dest">';
 
 // The following hack is from reverse engineering how kindle cloud app reads data
 db.all("select metadata from 'bookinfo'", function(err, rows) {
+    if(! rows) {
+        throw "no metadata found, probably not a valid file";
+    }
     rows.forEach(function (row) {
         var metadata = JSON.parse(row.metadata);
         var title = metadata.title;
@@ -243,13 +280,14 @@ db.all("select metadata from 'bookinfo'", function(err, rows) {
         var asin = metadata.asin;
         var ca = s(metadata);
 
-        console.log('staring process book: ' + title);
+        console.log('starting to process book: ' + title);
 
-        var HtmlHeader = '<html><head>' +
+        var HtmlHeader = '<html><head>' + css +
             '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">' +
             '<meta name="author" content="' + authors + '">' +
             '</head><body id="' + asin + '">';
-        var HtmlFile = path.join(os.tmpdir(), title.replace(/\s+/g, '-') + '.html');
+        //var HtmlFile = path.join(os.tmpdir(), title.replace(/\s+/g, '-') + '.html');
+        var HtmlFile = title.replace(/\s+/g, '-') + '.html';
 
         fs.writeFile(HtmlFile, HtmlHeader);
         console.log("created the file with HTML headers.");

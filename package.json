@@ -1,6 +1,6 @@
 {
     "name": "kindle-fetch",
-    "description": "todo",
+    "description": "Converts Kindle E-Books to HTML files ",
     "main": "main.js",
     "dependencies": {
         "osenv": "^0.1.4",
