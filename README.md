@@ -21,6 +21,8 @@ npm install
 ./main.js --help
 </pre>
 
+This generates HTML files with the book content in the directory you're in.
+
 You just need to figure out the file to which the ebook was stored. As an example, in my case that was `~/.config/chromium/Default/databases/https_lesen.amazon.de_0/1`  
 If you have installed the browser as snap package, you need to first check where that snap is mounted (e.g. with `mount | grep snap`).
 
