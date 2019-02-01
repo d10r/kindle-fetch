@@ -7,7 +7,7 @@ Works with Chrome/Chromium. Other browsers use different formats for the WebSQL 
 Code is from this gists:
 
  * 1: https://gist.github.com/yangchenyun/a1c123935d82f5e25d57
- * 2: https://gist.github.com/EelMood/84140e557065ac3d73f669f120429ae1
+ * 2: https://gist.github.com/moodule/84140e557065ac3d73f669f120429ae1
 
 I have just added minor usability improvements (e.g. cmdline switch for input file selection) and a package.json file.
 
