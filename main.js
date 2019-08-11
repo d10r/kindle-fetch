@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 
-/* 
+/*
  * @fileoverview Program to free the content in kindle books as plain HTML.
- *     
+ *
  * This is largely based on reverse engineering kindle cloud app
  * (https://read.amazon.com) to read book data from webSQL.
- * 
+ *
  * Access to kindle library is required to download this book.
  */
 
@@ -72,7 +72,7 @@ var KindleCompression = function() {
                     r === a && (r = g))),
                     h = u)
                 } else
-                    h.length > 0 && (l.push(h.length === 1 ? 
+                    h.length > 0 && (l.push(h.length === 1 ?
                     h.charCodeAt(0) : e[h]),
                     h = ""),
                     o += u
@@ -136,7 +136,7 @@ var KindleCompression = function() {
                 s++;
                 if (t.charCodeAt(0) <= d) {
                     for (; h.length > 0; ) {
-                        o = Math.min(100, 
+                        o = Math.min(100,
                         h.length);
                         q = h.substr(0, o);
                         h = h.substr(o);
@@ -214,7 +214,7 @@ function usageExit(errCode = 0) {
     console.log('     If you are using Chromium, look at ~/.config/chromium/Default/databases/ instead');
     console.log('     You may also have a different profile name then "Default"');
     console.log('\nThis program will not work with other browsers (e.g. Firefox) because of different WebSQL file formats.');
-    
+
     process.exit(errCode);
 }
 
@@ -241,7 +241,7 @@ var path = require('path');
 var sqlite3 = require('sqlite3').verbose();
 
 var process = require('process');
-// 
+//
 
 // http://read.amazon.com stores the ebook with webSQL, which is a sqlite accessible in Chrome
 // in this case, kindle cloud reader :
@@ -289,7 +289,7 @@ db.all("select metadata from 'bookinfo'", function(err, rows) {
         //var HtmlFile = path.join(os.tmpdir(), title.replace(/\s+/g, '-') + '.html');
         var HtmlFile = title.replace(/\s+/g, '-') + '.html';
 
-        fs.writeFile(HtmlFile, HtmlHeader);
+        fs.writeFileSync(HtmlFile, HtmlHeader);
         console.log("created the file with HTML headers.");
 
         db.all("select id, piece, other from 'fragments' where asin='" + asin + "' order by id", function(err, rows) {
@@ -309,11 +309,11 @@ db.all("select metadata from 'bookinfo'", function(err, rows) {
                         'dataUrl="' + image + '"',
                         'src="' + imageDataMap[image] + '"');
                 }
-                fs.appendFile(HtmlFile, uncompressedFragmentData);
+                fs.appendFileSync(HtmlFile, uncompressedFragmentData);
             });
         });
 
-        fs.appendFile(HtmlFile, '</body></html>');
+        fs.appendFileSync(HtmlFile, '</body></html>');
         console.log("created the file at: " + HtmlFile);
     });
 });

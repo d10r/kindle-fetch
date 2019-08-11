@@ -2,8 +2,9 @@
     "name": "kindle-fetch",
     "description": "Converts Kindle E-Books to HTML files ",
     "main": "main.js",
+    "version": "0.1",
     "dependencies": {
-        "osenv": "^0.1.4",
-        "sqlite3": "^3.1.8"
+        "osenv": "^0.1.5",
+        "sqlite3": "^4.0.9"
     }
 }
