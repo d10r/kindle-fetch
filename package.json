@@ -4,6 +4,6 @@
     "main": "main.js",
     "dependencies": {
         "osenv": "^0.1.4",
-        "sqlite3": "^3.1.8"
+        "sqlite3": "^4.1"
     }
 }
