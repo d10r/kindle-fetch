@@ -289,7 +289,7 @@ db.all("select metadata from 'bookinfo'", function(err, rows) {
         //var HtmlFile = path.join(os.tmpdir(), title.replace(/\s+/g, '-') + '.html');
         var HtmlFile = title.replace(/\s+/g, '-') + '.html';
 
-        fs.writeFile(HtmlFile, HtmlHeader);
+        fs.writeFileSync(HtmlFile, HtmlHeader);
         console.log("created the file with HTML headers.");
 
         db.all("select id, piece, other from 'fragments' where asin='" + asin + "' order by id", function(err, rows) {
@@ -309,11 +309,11 @@ db.all("select metadata from 'bookinfo'", function(err, rows) {
                         'dataUrl="' + image + '"',
                         'src="' + imageDataMap[image] + '"');
                 }
-                fs.appendFile(HtmlFile, uncompressedFragmentData);
+                fs.appendFileSync(HtmlFile, uncompressedFragmentData);
             });
         });
 
-        fs.appendFile(HtmlFile, '</body></html>');
+        fs.appendFileSync(HtmlFile, '</body></html>');
         console.log("created the file at: " + HtmlFile);
     });
 });
